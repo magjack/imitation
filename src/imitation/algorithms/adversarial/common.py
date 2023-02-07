@@ -377,9 +377,13 @@ class AdversarialTrainer(base.DemonstrationAlgorithm[types.Transitions]):
             for k, v in train_stats.items():
                 self.logger.record(k, v)
             self.logger.dump(self._disc_step)
+        
             if write_summaries:
                 self._summary_writer.add_histogram("disc_logits", disc_logits.detach())
 
+                for k, v in train_stats.items():
+                    self._summary_writer.add_histogram(k, v, self._disc_step)
+                    
         return train_stats
 
     def train_gen(
